@@ -1,0 +1,8 @@
+<h2>Kirish</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Kirish</button>
+</form>
+
+<p>Akkaunt yo‘qmi? <a href="{% url 'signup' %}">Ro‘yxatdan o‘tish</a></p>

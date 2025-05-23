@@ -1,0 +1,22 @@
+<h2>So‘z qidirish</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="query" placeholder="Nima deyish kerak?">
+    <button type="submit">Top</button>
+</form>
+
+{% if response %}
+    <p><strong>Natija:</strong> {{ response }}</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+  <p>Xush kelibsiz, {{ user.username }}!</p>
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Chiqish</button>
+  </form>
+{% endif %}
+
+
+
+<p><a href="{% url 'add_word' %}">+ Yangi so‘z qo‘shish</a></p>
