@@ -1,0 +1,13 @@
+
+
+{% block content %}
+  <h2>So‘zni tahrirlash</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Saqlash</button>
+  </form>
+
+  <p><a href="{% url 'home' %}">⬅ Ortga</a></p>
+{% endblock %}

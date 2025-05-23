@@ -1,0 +1,29 @@
+{% block content %}
+<h3>So‘zlaring ro‘yxati</h3>
+<ul>
+    <ul>
+    {% for word in words %}
+        <li>
+            {{ word.input_text }} → {{ word.output_text }}
+
+            <form method="post" action="{% url 'delete_word' word.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">O‘chirish</button>
+            </form>
+
+            <a href="{% url 'edit_word' word.id %}">Tahrirlash</a>
+        </li>
+    {% empty %}
+        <li>Sizda so‘zlar mavjud emas.</li>
+    {% endfor %}
+</ul>
+
+</ul>
+
+<p><a href="{% url 'add_word' %}">+ Yangi so‘z qo‘shish</a></p>
+
+{% for message in messages %}
+    <div style="color: green;" >{{ message }}</div>
+{% endfor %}
+
+{% endblock %}

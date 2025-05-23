@@ -1,22 +1,200 @@
+
+<nav
+  style="
+    background: #f0f0f0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  "
+>
+  <div>
+    <a href="{% url 'home' %}">Home</a>
+  </div>
+  <div>
+    {% if user.is_authenticated %}
+    <div style="display: inline-block; position: relative">
+      <a href="#" id="settings-icon" style="font-size: 24px; user-select: none">⚙️</a>
+      <ul
+        id="settings-dropdown"
+        style="
+          display: none;
+          position: absolute;
+          background: white;
+          border: 1px solid #ccc;
+          padding: 5px 0;
+          margin: 0;
+          list-style: none;
+          min-width: 180px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+          z-index: 1000;
+        "
+      >
+        <li style="padding: 8px 16px">
+          <a href="/settings/password/" style="text-decoration: none; color: #333"
+            >Parolni o‘zgartirish</a
+          >
+        </li>
+        <li style="padding: 8px 16px">
+          <a href="/settings/products/" style="text-decoration: none; color: #333"
+            >So'zlar</a
+          >
+        </li>
+        <li>
+          <form method="post" action="{% url 'logout' %}" style="display: inline">
+            {% csrf_token %}
+            <button type="submit" style="margin-left: 10px">Chiqish</button>
+          </form>
+        </li>
+        <li>
+          <a href="{% url 'add_word' %}">+ Yangi so‘z qo‘shish</a>
+        </li>
+      </ul>
+    </div>
+    <span>Xush kelibsiz, {{ user.username }}!</span>
+
+    {% else %}
+    <a href="{% url 'login' %}">Kirish</a> | <a href="{% url 'signup' %}">Ro‘yxatdan o‘tish</a>
+    {% endif %}
+  </div>
+</nav>
+
 <h2>So‘z qidirish</h2>
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="query" placeholder="Nima deyish kerak?">
-    <button type="submit">Top</button>
+<form method="post" id="search-form">
+  {% csrf_token %}
+  <input
+    type="search"
+    name="query"
+    id="search-input"
+    placeholder="Nima deyish kerak?"
+    autocomplete="off"
+  />
+
+  <button type="submit">Top</button>
+  <ul
+    id="suggestions-list"
+    style="
+      border: 1px solid #ccc;
+      display: none;
+      position: absolute;
+      background: white;
+      z-index: 100;
+      list-style: none;
+      padding: 5px;
+      width: 200px;
+    "
+  ></ul>
 </form>
 
 {% if response %}
-    <p><strong>Natija:</strong> {{ response }}</p>
+<p><strong>Natija:</strong> <span id="output">{{ response }}</span></p>
+
 {% endif %}
 
-{% if user.is_authenticated %}
-  <p>Xush kelibsiz, {{ user.username }}!</p>
-  <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Chiqish</button>
-  </form>
-{% endif %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('search-input');
+    const suggestionBox = document.getElementById('suggestions-list');
+    const outputBox = document.getElementById('output');
 
+    input.addEventListener('input', function () {
+      const term = input.value.trim();
+      if (!term) {
+        suggestionBox.style.display = 'none';
+        suggestionBox.innerHTML = '';
+        return;
+      }
 
+      fetch(`/search_suggestions/?term=${encodeURIComponent(term)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          suggestionBox.innerHTML = '';
+          if (data.length > 0) {
+            data.forEach((item) => {
+              const li = document.createElement('li');
+              li.textContent = item;
+              li.style.cursor = 'pointer';
+              li.addEventListener('click', () => {
+                input.value = item;
+                suggestionBox.style.display = 'none';
 
-<p><a href="{% url 'add_word' %}">+ Yangi so‘z qo‘shish</a></p>
+                fetch('/get_word_output/', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                  },
+                  body: `query=${encodeURIComponent(item)}`,
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    let outputEl = document.getElementById('output');
+                    if (!outputEl) {
+                      const p = document.createElement('p');
+                      p.innerHTML = `<strong>Natija:</strong> <span id="output">${data.result}</span>`;
+                      input.closest('form').after(p);
+                    } else {
+                      outputEl.textContent = data.result;
+                    }
+                  });
+              });
+              suggestionBox.appendChild(li);
+            });
+            suggestionBox.style.display = 'block';
+          } else {
+            suggestionBox.style.display = 'none';
+          }
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('search-form').contains(e.target)) {
+        suggestionBox.style.display = 'none';
+      }
+    });
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + '=') {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const icon = document.getElementById('settings-icon');
+    const dropdown = document.getElementById('settings-dropdown');
+
+    icon.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      } else {
+        dropdown.style.display = 'block';
+      }
+    });
+
+    // Tashqariga bosilganda menyuni yopish
+    document.addEventListener('click', (e) => {
+      if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+  });
+</script>
+<script>
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // bu vaqt zonasini backendga yuborish mumkin (localStorage yoki POST orqali)
+    console.log("Foydalanuvchi timezone:", timezone);
+</script>
