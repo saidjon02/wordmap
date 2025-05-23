@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'core',  # Your core app
     'django.contrib.staticfiles',
 ]
-ALLOWED_HOSTS = ['https://wordmap-clu1.onrender.com']
+ALLOWED_HOSTS = ['https://wordmap-clu1.onrender.com', 'localhost', '127.0.0.1']
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 MIDDLEWARE = [
