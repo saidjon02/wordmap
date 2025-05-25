@@ -17,21 +17,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 import os  # Agar yo'q bo'lsa
 
+# settings.py
 
+
+
+# URL orqali murojaat qilinadigan prefix
 STATIC_URL = '/static/'
 
-# collectstatic ishlatilganda statik fayllar yig'iladigan joy
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# collectstatic shu yerga to'playdi
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Qo'shimcha static papkalar, masalan, loyihaning o'zida statik fayllar bo'lsa
+# Loyiha ildizidagi static papkaga ishora
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Bu papka haqiqatan mavjud bo'lishi kerak
+    BASE_DIR / 'static',
 ]
- 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-pfyx$st&#ih99rsku=6l(ox6m=f8#z*hy=tfzhlhvu$0s@y9&*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
