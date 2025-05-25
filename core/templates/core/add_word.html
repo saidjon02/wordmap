@@ -4,14 +4,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add New Word</title>
+    <title>Add New Word | WordMap</title>
+    <meta
+      name="description"
+      content="Add new words to your personal WordMap vocabulary list. Expand your language skills and manage your words easily."
+    />
+    <meta
+      name="keywords"
+      content="WordMap, add word, vocabulary, language learning, word manager, save words"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Add New Word | WordMap" />
+    <meta
+      property="og:description"
+      content="Add new words to your personal WordMap vocabulary list. Expand your language skills and manage your words easily."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wordmap-clu1.onrender.com/add_word/" />
+    <meta property="og:site_name" content="WordMap" />
+    <link rel="canonical" href="https://wordmap-clu1.onrender.com/add_word/" />
     <link rel="stylesheet" href="{% static 'css/add-new-word.css' %}" />
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Add New Word | WordMap",
+        "description": "Add new words to your personal WordMap vocabulary list. Expand your language skills and manage your words easily.",
+        "url": "https://wordmap-clu1.onrender.com/add_word/"
+      }
+    </script>
   </head>
   <body>
     <div class="add-word-container">
       <div class="add-word-card">
         <div class="add-word-header">
-          <img alt="Logo" class="add-word-logo" onerror="this.style.display='none'" />
+          <img
+            src="{% static 'img/logo.png' %}"
+            class="add-word-logo"
+            onerror="this.style.display='none'"
+          />
           <h2>Add New Word</h2>
         </div>
         <form method="post" class="add-word-form">

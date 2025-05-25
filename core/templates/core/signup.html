@@ -4,14 +4,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
+    <title>Sign Up | WordMap</title>
+    <meta
+      name="description"
+      content="Create your free WordMap account. Start saving, searching, and managing your vocabulary for better language learning."
+    />
+    <meta
+      name="keywords"
+      content="WordMap, sign up, register, create account, vocabulary, language learning, word manager"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Sign Up | WordMap" />
+    <meta
+      property="og:description"
+      content="Create your free WordMap account. Start saving, searching, and managing your vocabulary for better language learning."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wordmap-clu1.onrender.com/signup/" />
+    <meta property="og:site_name" content="WordMap" />
+    <link rel="canonical" href="https://wordmap-clu1.onrender.com/signup/" />
     <link rel="stylesheet" href="{% static 'css/signup-style.css' %}" />
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Sign Up | WordMap",
+        "description": "Create your free WordMap account. Start saving, searching, and managing your vocabulary for better language learning.",
+        "url": "https://wordmap-clu1.onrender.com/signup/"
+      }
+    </script>
   </head>
   <body>
     <div class="signup-container">
       <div class="signup-card">
         <div class="signup-header">
-          <img alt="Logo" class="signup-logo" onerror="this.style.display='none'" />
+          <img
+            src="{% static 'img/logo.png' %}"
+            class="signup-logo"
+            onerror="this.style.display='none'"
+          />
           <h2>Sign Up</h2>
         </div>
         <form method="post" class="signup-form">

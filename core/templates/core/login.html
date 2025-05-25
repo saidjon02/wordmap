@@ -4,7 +4,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Login | WordMap</title>
+    <meta
+      name="description"
+      content="Login to your WordMap account to manage your vocabulary, search words, and track your language learning progress."
+    />
+    <meta
+      name="keywords"
+      content="WordMap, login, user login, vocabulary, language learning, word manager"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Login | WordMap" />
+    <meta
+      property="og:description"
+      content="Login to your WordMap account to manage your vocabulary, search words, and track your language learning progress."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wordmap-clu1.onrender.com/login/" />
+    <meta property="og:site_name" content="WordMap" />
+    <link rel="canonical" href="https://wordmap-clu1.onrender.com/login/" />
+    <link rel="stylesheet" href="{% static 'css/login-style.css' %}" />
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Login | WordMap",
+        "description": "Login to your WordMap account to manage your vocabulary, search words, and track your language learning progress.",
+        "url": "https://wordmap-clu1.onrender.com/login/"
+      }
+    </script>
     <style>
       body {
         background: linear-gradient(135deg, #18191a 0%, #232526 100%);
@@ -237,7 +266,11 @@
     <div class="login-container">
       <div class="login-card">
         <div class="login-header">
-          <img alt="Logo" class="login-logo" onerror="this.style.display='none'" />
+          <img
+            src="{% static 'img/logo.png' %}"
+            class="login-logo"
+            onerror="this.style.display='none'"
+          />
           <h2>Login</h2>
         </div>
         <form method="post" class="login-form" style="color: white">

@@ -4,14 +4,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Word</title>
+    <title>Edit Word | WordMap</title>
+    <meta
+      name="description"
+      content="Edit your saved words in WordMap. Update your vocabulary and manage your language learning efficiently."
+    />
+    <meta
+      name="keywords"
+      content="WordMap, edit word, vocabulary, language learning, word manager, update words"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Edit Word | WordMap" />
+    <meta
+      property="og:description"
+      content="Edit your saved words in WordMap. Update your vocabulary and manage your language learning efficiently."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wordmap-clu1.onrender.com/edit_word/" />
+    <meta property="og:site_name" content="WordMap" />
+    <link rel="canonical" href="https://wordmap-clu1.onrender.com/edit_word/" />
     <link rel="stylesheet" href="{% static 'css/edit-word.css' %}" />
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Edit Word | WordMap",
+        "description": "Edit your saved words in WordMap. Update your vocabulary and manage your language learning efficiently.",
+        "url": "https://wordmap-clu1.onrender.com/edit_word/"
+      }
+    </script>
   </head>
   <body>
     <div class="edit-word-container">
       <div class="edit-word-card">
         <div class="edit-word-header">
-          <img alt="Logo" class="edit-word-logo" onerror="this.style.display='none'" />
+          <img
+            src="{% static 'img/logo.png' %}"
+            class="edit-word-logo"
+            onerror="this.style.display='none'"
+          />
           <h2>Edit Word</h2>
         </div>
         <form method="post" class="edit-word-form">

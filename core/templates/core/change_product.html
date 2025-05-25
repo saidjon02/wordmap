@@ -1,59 +1,87 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>My Words</title>
-        <link rel="stylesheet" href="{% static 'css/words.css' %}" />
-    </head>
-    <body>
-        <div class="words-container">
-            <div class="words-card">
-                <h2 class="words-title">Your Words List</h2>
-                <ul class="words-list">
-                    {% for word in words %}
-                    <li class="word-item">
-                        <span class="word-input">{{ word.input_text }}</span>
-                        <span class="word-arrow">→</span>
-                        <span class="word-output">
-                            <span class="output-short">{{ word.output_text|truncatechars:80 }}</span>
-                            {% if word.output_text|length > 80 %}
-                            <span class="output-full" style="display: none">{{ word.output_text }}</span>
-                            <button class="see-more-btn" onclick="toggleSeeMore(this)">See more</button>
-                            {% endif %}
-                        </span>
-                        <form method="post" action="{% url 'delete_word' word.id %}" class="delete-form">
-                            {% csrf_token %}
-                            <button type="submit" class="delete-btn">Delete</button>
-                        </form>
-                        <a href="{% url 'edit_word' word.id %}" class="edit-link">Edit</a>
-                    </li>
-                    {% empty %}
-                    <li class="no-words">You have no words.</li>
-                    {% endfor %}
-                </ul>
-                <p class="add-word-link"><a href="{% url 'add_word' %}">+ Add new word</a></p>
-                <p class="back-home-link"><a href="{% url 'home' %}">⬅ Back to Home</a></p>
-                {% for message in messages %}
-                <div class="words-message">{{ message }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <script>
-            function toggleSeeMore(btn) {
-                const short = btn.parentElement.querySelector('.output-short');
-                const full = btn.parentElement.querySelector('.output-full');
-                if (full.style.display === 'none') {
-                    full.style.display = 'inline';
-                    short.style.display = 'none';
-                    btn.textContent = 'See less';
-                } else {
-                    full.style.display = 'none';
-                    short.style.display = 'inline';
-                    btn.textContent = 'See more';
-                }
-            }
-        </script>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Words List | WordMap</title>
+    <meta
+      name="description"
+      content="Browse and manage your full list of saved words on WordMap. Edit, delete, and organize your vocabulary for effective language learning."
+    />
+    <meta
+      name="keywords"
+      content="WordMap, words list, vocabulary, language learning, word manager, manage words"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Words List | WordMap" />
+    <meta
+      property="og:description"
+      content="Browse and manage your full list of saved words on WordMap. Edit, delete, and organize your vocabulary for effective language learning."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wordmap-clu1.onrender.com/change_products/" />
+    <meta property="og:site_name" content="WordMap" />
+    <link rel="canonical" href="https://wordmap-clu1.onrender.com/change_products/" />
+    <link rel="stylesheet" href="{% static 'css/words.css' %}" />
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Words List | WordMap",
+        "description": "Browse and manage your full list of saved words on WordMap. Edit, delete, and organize your vocabulary for effective language learning.",
+        "url": "https://wordmap-clu1.onrender.com/change_products/"
+      }
+    </script>
+  </head>
+  <body>
+    <div class="words-container">
+      <div class="words-card">
+        <h2 class="words-title">Your Words List</h2>
+        <ul class="words-list">
+          {% for word in words %}
+          <li class="word-item">
+            <span class="word-input">{{ word.input_text }}</span>
+            <span class="word-arrow">→</span>
+            <span class="word-output">
+              <span class="output-short">{{ word.output_text|truncatechars:80 }}</span>
+              {% if word.output_text|length > 80 %}
+              <span class="output-full" style="display: none">{{ word.output_text }}</span>
+              <button class="see-more-btn" onclick="toggleSeeMore(this)">See more</button>
+              {% endif %}
+            </span>
+            <form method="post" action="{% url 'delete_word' word.id %}" class="delete-form">
+              {% csrf_token %}
+              <button type="submit" class="delete-btn">Delete</button>
+            </form>
+            <a href="{% url 'edit_word' word.id %}" class="edit-link">Edit</a>
+          </li>
+          {% empty %}
+          <li class="no-words">You have no words.</li>
+          {% endfor %}
+        </ul>
+        <p class="add-word-link"><a href="{% url 'add_word' %}">+ Add new word</a></p>
+        <p class="back-home-link"><a href="{% url 'home' %}">⬅ Back to Home</a></p>
+        {% for message in messages %}
+        <div class="words-message">{{ message }}</div>
+        {% endfor %}
+      </div>
+    </div>
+    <script>
+      function toggleSeeMore(btn) {
+        const short = btn.parentElement.querySelector('.output-short');
+        const full = btn.parentElement.querySelector('.output-full');
+        if (full.style.display === 'none') {
+          full.style.display = 'inline';
+          short.style.display = 'none';
+          btn.textContent = 'See less';
+        } else {
+          full.style.display = 'none';
+          short.style.display = 'inline';
+          btn.textContent = 'See more';
+        }
+      }
+    </script>
+  </body>
 </html>

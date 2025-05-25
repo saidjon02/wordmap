@@ -4,9 +4,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <title>WordMap - Home | Search and Manage Your Words</title>
+    <meta
+      name="description"
+      content="WordMap is your personal word manager. Search, save, like, and manage your vocabulary easily. Track your search history and favorite words for effective language learning."
+    />
+    <meta
+      name="keywords"
+      content="WordMap, word search, vocabulary, language learning, word manager, save words, liked words, search history"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="WordMap - Home | Search and Manage Your Words" />
+    <meta
+      property="og:description"
+      content="WordMap is your personal word manager. Search, save, like, and manage your vocabulary easily. Track your search history and favorite words for effective language learning."
+    />
     <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
-    <title>Home</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wordmap-clu1.onrender.com/" />
+    <meta property="og:site_name" content="WordMap" />
+    <link rel="canonical" href="https://wordmap-clu1.onrender.com/" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "WordMap",
+        "description": "WordMap is your personal word manager. Search, save, like, and manage your vocabulary easily. Track your search history and favorite words for effective language learning.",
+        "url": "https://wordmap-clu1.onrender.com/"
+      }
+    </script>
   </head>
   <body>
     <div class="height">
