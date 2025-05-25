@@ -49,13 +49,19 @@
               onclick="window.location.href='{% url 'change_products' %}'"
               style="cursor: pointer"
             >
-              <a href="{% url 'change_products' %}">Words</a>
+              <a href="{% url 'change_products' %}">My Words</a>
             </li>
             <li onclick="window.location.href='{% url 'add_word' %}'" style="cursor: pointer">
               <a href="{% url 'add_word' %}">Add new word</a>
             </li>
             <li style="cursor: pointer">
-              <a href="{% url 'likes_words' %}">Your likes word</a>
+              <a href="{% url 'likes_words' %}">Favorite words</a>
+            </li>
+            <li
+              onclick="window.location.href='{% url 'change_password' %}'"
+              style="cursor: pointer"
+            >
+              <a href="{% url 'search_history' %}">Search history</a>
             </li>
             <li
               onclick="window.location.href='{% url 'change_password' %}'"
@@ -75,12 +81,6 @@
                   Logout
                 </button>
               </form>
-            </li>
-            <li
-              onclick="window.location.href='{% url 'change_password' %}'"
-              style="cursor: pointer"
-            >
-              <a href="{% url 'search_history' %}">Search history</a>
             </li>
           </ul>
           {% endif %}
