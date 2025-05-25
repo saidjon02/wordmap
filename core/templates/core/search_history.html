@@ -148,7 +148,25 @@
         <ul class="words-list" id="search-history-list">
           <!-- Will be filled by JS -->
         </ul>
-        <button id="clear-history-btn" style="margin:0 auto 1.2rem auto;display:block;background:#222d3b;color:#fff;border:none;border-radius:6px;padding:0.7rem 1.5rem;font-size:1.08rem;font-weight:500;cursor:pointer;box-shadow:0 2px 8px rgba(33,150,243,0.13);transition:background 0.2s;">Clear History</button>
+        <button
+          id="clear-history-btn"
+          style="
+            margin: 0 auto 1.2rem auto;
+            display: block;
+            background: #222d3b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1.08rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.13);
+            transition: background 0.2s;
+          "
+        >
+          Clear History
+        </button>
         <p class="back-home-link"><a href="{% url 'home' %}">⬅ Back to Home</a></p>
       </div>
     </div>
@@ -182,7 +200,7 @@
         localStorage.setItem('searchHistoryFull', JSON.stringify(history));
         location.reload();
       };
-      document.getElementById('clear-history-btn').onclick = function() {
+      document.getElementById('clear-history-btn').onclick = function () {
         if (confirm('Are you sure you want to clear your entire search history?')) {
           localStorage.removeItem('searchHistoryFull');
           localStorage.removeItem('searchHistory');
