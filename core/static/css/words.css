@@ -208,3 +208,133 @@ body {
     border-radius: 8px;
   }
 }
+body {
+  background: #181a1b;
+  color: #e4e6eb;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.words-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  background: #181a1b;
+}
+.words-card {
+  background: #23272f;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.45);
+  padding: 2.5rem 2.2rem 2rem 2.2rem;
+  min-width: 340px;
+  max-width: 420px;
+  width: 100%;
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.words-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #7abaff;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+ul.words-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  width: 100%;
+}
+ul.words-list li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #23272f;
+  border-radius: 8px;
+  margin-bottom: 0.7rem;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.07);
+  transition: background 0.2s;
+  position: relative;
+}
+ul.words-list li.no-words {
+  background: none;
+  color: #888;
+  text-align: center;
+  justify-content: center;
+  font-size: 1.08rem;
+  box-shadow: none;
+  padding: 1.2rem 0;
+}
+.word-input {
+  font-size: 1.13rem;
+  font-weight: 500;
+  color: #e4e6eb;
+  background: #23272f;
+  border: none;
+  outline: none;
+  flex: 1 1 auto;
+  word-break: break-all;
+}
+.word-time {
+  color: #b0b3b8;
+  font-size: 0.98rem;
+  margin-left: auto;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+}
+.delete-like-btn {
+  background: #1474c2;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-left: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.15);
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+.delete-like-btn:hover,
+.delete-like-btn:focus {
+  background: #0d47a1;
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.22);
+}
+.back-home-link {
+  margin-top: 1.2rem;
+  text-align: center;
+}
+.back-home-link a {
+  color: #7abaff;
+  text-decoration: none;
+  font-size: 1.08rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.back-home-link a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .words-card {
+    min-width: 0;
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+  }
+  .words-title {
+    font-size: 1.4rem;
+  }
+}
