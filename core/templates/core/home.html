@@ -45,18 +45,25 @@
           {% if user.is_authenticated %}
           <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
           <ul id="settings-dropdown">
-            <li style="cursor: pointer">
+            <li
+              onclick="window.location.href='{% url 'change_products' %}'"
+              style="cursor: pointer"
+            >
               <a href="{% url 'change_products' %}">Words</a>
             </li>
-            <li style="cursor: pointer">
+            <li onclick="window.location.href='{% url 'add_word' %}'" style="cursor: pointer">
               <a href="{% url 'add_word' %}">Add new word</a>
             </li>
             <li style="cursor: pointer">
               <a href="{% url 'likes_words' %}">Your likes word</a>
             </li>
-            <li style="cursor: pointer">
+            <li
+              onclick="window.location.href='{% url 'change_password' %}'"
+              style="cursor: pointer"
+            >
               <a href="{% url 'change_password' %}">Change password</a>
             </li>
+
             <li style="cursor: pointer">
               <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
@@ -70,7 +77,7 @@
               </form>
             </li>
             <li style="cursor: pointer">
-              <a href="{% url 'search_history' %}">Search history</a>
+              <a href="#" onclick="openHistoryModal();return false;">Search history</a>
             </li>
           </ul>
           {% endif %}
