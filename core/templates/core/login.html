@@ -11,21 +11,14 @@
     <div class="login-container">
       <div class="login-card">
         <div class="login-header">
-          <img
-            src="{% static 'img/logo.png' %}"
-            alt="Logo"
-            class="login-logo"
-            onerror="this.style.display='none'"
-          />
+          <img alt="Logo" class="login-logo" onerror="this.style.display='none'" />
           <h2>Login</h2>
         </div>
-        <form method="post" class="login-form" style="color: white;">
+        <form method="post" class="login-form" style="color: white">
           {% csrf_token %} {{ form.as_p }}
           <button type="submit" class="login-btn">Login</button>
         </form>
-        <p class="login-signup">
-          Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
-        </p>
+        <p class="login-signup">Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
       </div>
     </div>
   </body>
