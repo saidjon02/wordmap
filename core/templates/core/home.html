@@ -76,8 +76,11 @@
                 </button>
               </form>
             </li>
-            <li style="cursor: pointer">
-              <a href="#" onclick="openHistoryModal();return false;">Search history</a>
+            <li
+              onclick="window.location.href='{% url 'change_password' %}'"
+              style="cursor: pointer"
+            >
+              <a href="{% url 'search_history' %}">Search history</a>
             </li>
           </ul>
           {% endif %}
