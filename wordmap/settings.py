@@ -21,7 +21,7 @@ import os  # Agar yo'q bo'lsa
 STATIC_URL = '/static/'
 
 # collectstatic ishlatilganda statik fayllar yig'iladigan joy
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Qo'shimcha static papkalar, masalan, loyihaning o'zida statik fayllar bo'lsa
 STATICFILES_DIRS = [
