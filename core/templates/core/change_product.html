@@ -1,29 +1,59 @@
-{% block content %}
-<h3>So‘zlaring ro‘yxati</h3>
-<ul>
-    <ul>
-    {% for word in words %}
-        <li>
-            {{ word.input_text }} → {{ word.output_text }}
-
-            <form method="post" action="{% url 'delete_word' word.id %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">O‘chirish</button>
-            </form>
-
-            <a href="{% url 'edit_word' word.id %}">Tahrirlash</a>
-        </li>
-    {% empty %}
-        <li>Sizda so‘zlar mavjud emas.</li>
-    {% endfor %}
-</ul>
-
-</ul>
-
-<p><a href="{% url 'add_word' %}">+ Yangi so‘z qo‘shish</a></p>
-
-{% for message in messages %}
-    <div style="color: green;" >{{ message }}</div>
-{% endfor %}
-
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>My Words</title>
+        <link rel="stylesheet" href="{% static 'css/words.css' %}" />
+    </head>
+    <body>
+        <div class="words-container">
+            <div class="words-card">
+                <h2 class="words-title">Your Words List</h2>
+                <ul class="words-list">
+                    {% for word in words %}
+                    <li class="word-item">
+                        <span class="word-input">{{ word.input_text }}</span>
+                        <span class="word-arrow">→</span>
+                        <span class="word-output">
+                            <span class="output-short">{{ word.output_text|truncatechars:80 }}</span>
+                            {% if word.output_text|length > 80 %}
+                            <span class="output-full" style="display: none">{{ word.output_text }}</span>
+                            <button class="see-more-btn" onclick="toggleSeeMore(this)">See more</button>
+                            {% endif %}
+                        </span>
+                        <form method="post" action="{% url 'delete_word' word.id %}" class="delete-form">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                        <a href="{% url 'edit_word' word.id %}" class="edit-link">Edit</a>
+                    </li>
+                    {% empty %}
+                    <li class="no-words">You have no words.</li>
+                    {% endfor %}
+                </ul>
+                <p class="add-word-link"><a href="{% url 'add_word' %}">+ Add new word</a></p>
+                <p class="back-home-link"><a href="{% url 'home' %}">⬅ Back to Home</a></p>
+                {% for message in messages %}
+                <div class="words-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <script>
+            function toggleSeeMore(btn) {
+                const short = btn.parentElement.querySelector('.output-short');
+                const full = btn.parentElement.querySelector('.output-full');
+                if (full.style.display === 'none') {
+                    full.style.display = 'inline';
+                    short.style.display = 'none';
+                    btn.textContent = 'See less';
+                } else {
+                    full.style.display = 'none';
+                    short.style.display = 'inline';
+                    btn.textContent = 'See more';
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -4,6 +4,8 @@ from django.contrib.auth import views as auth_views
 from . import views
 from .views import WordPairViewSet
 from .views_login import CustomLoginView 
+from django.shortcuts import render
+
 router = DefaultRouter()
 router.register('posts', WordPairViewSet, basename='post')
 
@@ -21,4 +23,6 @@ urlpatterns = [
     path('settings/password/', views.change_password_view, name='change_password'),
     path('settings/products/', views.change_products_view, name='change_products'),
     path('api/', include(router.urls)),
+    path('likes_words/', lambda request: render(request, 'core/likes_words.html'), name='likes_words'),
+    path('search_history/', lambda request: render(request, 'core/search_history.html'), name='search_history'),
 ]

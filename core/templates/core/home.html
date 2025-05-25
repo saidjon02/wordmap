@@ -15,20 +15,17 @@
           {% if user.is_authenticated %}
           <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
           <ul id="settings-dropdown">
-            <li
-              onclick="window.location.href='{% url 'change_password' %}'"
-              style="cursor: pointer"
-            >
-              <a href="{% url 'change_password' %}">Change password</a>
-            </li>
-            <li
-              onclick="window.location.href='{% url 'change_products' %}'"
-              style="cursor: pointer"
-            >
+            <li style="cursor: pointer">
               <a href="{% url 'change_products' %}">Words</a>
             </li>
-            <li onclick="window.location.href='{% url 'add_word' %}'" style="cursor: pointer">
+            <li style="cursor: pointer">
               <a href="{% url 'add_word' %}">Add new word</a>
+            </li>
+            <li style="cursor: pointer">
+              <a href="{% url 'likes_words' %}">Your likes word</a>
+            </li>
+            <li style="cursor: pointer">
+              <a href="{% url 'change_password' %}">Change password</a>
             </li>
             <li style="cursor: pointer">
               <form method="post" action="{% url 'logout' %}">
@@ -41,6 +38,9 @@
                   Logout
                 </button>
               </form>
+            </li>
+            <li style="cursor: pointer">
+              <a href="{% url 'search_history' %}">Search history</a>
             </li>
           </ul>
           {% endif %}
@@ -66,6 +66,25 @@
         {% if response %}
         <div class="natija" style="position: relative">
           <button
+            id="like-btn"
+            onclick="toggleLike()"
+            style="
+              position: absolute;
+              top: 20px;
+              right: 80px;
+              font-size: 16px;
+              color: #4f8cff;
+              border: none;
+              background: transparent;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+            "
+          >
+            <span id="like-icon"><i class="bx bx-heart"></i> </span>
+          </button>
+          <button
             onclick="copyToClipboard()"
             style="
               position: absolute;
@@ -82,6 +101,7 @@
           >
             Copy
           </button>
+
           <p><span id="output">{{ response|linebreaksbr|safe }}</span></p>
         </div>
 
@@ -97,6 +117,56 @@
         <h2>Welcome {{ welcome_username }}</h2>
       </div>
       {% endif %}
+    </div>
+
+    <div
+      id="history-modal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        style="
+          background: #23232a;
+          border-radius: 16px;
+          max-width: 400px;
+          width: 90vw;
+          margin: auto;
+          padding: 2rem 1.5rem;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+          position: relative;
+        "
+      >
+        <button
+          onclick="closeHistoryModal()"
+          style="
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+          "
+        >
+          &times;
+        </button>
+        <h3 style="color: #fff; text-align: center; margin-bottom: 1.2rem">Search History</h3>
+        <ul
+          id="history-list"
+          style="list-style: none; padding: 0; margin: 0; max-height: 300px; overflow-y: auto"
+        ></ul>
+      </div>
     </div>
 
     <script>
@@ -132,6 +202,41 @@
             alert('Nusxa olishda xatolik yuz berdi: ' + err);
           });
       }
+
+      function toggleLike() {
+        const likeBtn = document.getElementById('like-btn');
+        const likeIcon = document.getElementById('like-icon');
+        const word = document.getElementById('search-input').value;
+        let likedWords = JSON.parse(localStorage.getItem('likedWords') || '[]');
+        const idx = likedWords.indexOf(word);
+        if (idx === -1) {
+          likedWords.push(word);
+          likeIcon.innerHTML = "<i class='bx bxs-heart'></i>"; // solid heart
+          likeBtn.style.color = '#ff5c5c !important'; // red
+        } else {
+          likedWords.splice(idx, 1);
+          likeIcon.innerHTML = "<i class='bx bx-heart'></i>"; // outlined heart
+          likeBtn.style.color = '#4f8cff !important'; // blue
+        }
+        localStorage.setItem('likedWords', JSON.stringify(likedWords));
+      }
+
+      // Set like state on load
+      document.addEventListener('DOMContentLoaded', () => {
+        const likeBtn = document.getElementById('like-btn');
+        const likeIcon = document.getElementById('like-icon');
+        if (likeBtn && likeIcon) {
+          const word = document.getElementById('search-input').value;
+          let likedWords = JSON.parse(localStorage.getItem('likedWords') || '[]');
+          if (likedWords.includes(word)) {
+            likeIcon.innerHTML = "<i class='bx bxs-heart'></i>"; // solid red heart
+            likeBtn.style.color = '#ff5c5c !important';
+          } else {
+            likeIcon.innerHTML = "<i class='bx bx-heart'></i>"; // outline heart
+            likeBtn.style.color = '#4f8cff !important';
+          }
+        }
+      });
 
       document.addEventListener('DOMContentLoaded', () => {
         // ========== DROPDOWN ==========
@@ -180,7 +285,8 @@
                   li.addEventListener('click', () => {
                     input.value = item;
                     suggestionBox.style.display = 'none';
-                    // Formni submit qilamiz
+                    // Save to search history before submitting
+                    saveSearchHistoryAll(item);
                     form.submit();
                   });
                   suggestionBox.appendChild(li);
@@ -197,6 +303,68 @@
           }
         });
       });
+
+      // Search history logic
+      function saveSearchHistory(word) {
+        if (!word) return;
+        let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        if (!history.includes(word)) {
+          history.unshift(word);
+          if (history.length > 30) history = history.slice(0, 30);
+          localStorage.setItem('searchHistory', JSON.stringify(history));
+        }
+      }
+      // Save search on form submit
+      document.getElementById('search-form').addEventListener('submit', function (e) {
+        const word = document.getElementById('search-input').value.trim();
+        if (!word) return;
+        saveSearchHistoryAll(word);
+      });
+      // Save search history (short and full)
+      function saveSearchHistoryAll(word) {
+        if (!word) return;
+        // Short history for modal
+        let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        if (!history.includes(word)) {
+          history.unshift(word);
+          if (history.length > 30) history = history.slice(0, 30);
+          localStorage.setItem('searchHistory', JSON.stringify(history));
+        }
+        // Full history for dedicated page
+        let full = JSON.parse(localStorage.getItem('searchHistoryFull') || '[]');
+        full.unshift({ word: word, time: new Date().toISOString() });
+        if (full.length > 200) full = full.slice(0, 200);
+        localStorage.setItem('searchHistoryFull', JSON.stringify(full));
+      }
+
+      // Modal logic
+      function openHistoryModal() {
+        const modal = document.getElementById('history-modal');
+        const list = document.getElementById('history-list');
+        let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        list.innerHTML = '';
+        if (history.length === 0) {
+          list.innerHTML = '<li style="color:#b0b3b8; text-align:center;">No search history.</li>';
+        } else {
+          history.forEach(function (word) {
+            const li = document.createElement('li');
+            li.style.padding = '10px 0';
+            li.style.borderBottom = '1px solid #393939';
+            li.style.color = '#fff';
+            li.style.cursor = 'pointer';
+            li.textContent = word;
+            li.onclick = function () {
+              document.getElementById('search-input').value = word;
+              closeHistoryModal();
+            };
+            list.appendChild(li);
+          });
+        }
+        modal.style.display = 'flex';
+      }
+      function closeHistoryModal() {
+        document.getElementById('history-modal').style.display = 'none';
+      }
     </script>
   </body>
 </html>

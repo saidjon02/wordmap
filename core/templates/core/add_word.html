@@ -4,14 +4,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <title>Document</title>
+    <title>Add New Word</title>
+    <link rel="stylesheet" href="{% static 'css/add-new-word.css' %}" />
   </head>
   <body>
-    <h2>Yangi so‘z qo‘shish</h2>
-    <form method="post">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Qo‘shish</button>
-    </form>
+    <div class="add-word-container">
+      <div class="add-word-card">
+        <div class="add-word-header">
+          <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            class="add-word-logo"
+            onerror="this.style.display='none'"
+          />
+          <h2>Add New Word</h2>
+        </div>
+        <form method="post" class="add-word-form">
+          {% csrf_token %} {{ form.as_p }}
+          <button type="submit" class="add-word-btn">Add</button>
+        </form>
+        <p class="back-home-link"><a href="{% url 'home' %}">⬅ Back to Home</a></p>
+      </div>
+    </div>
   </body>
 </html>

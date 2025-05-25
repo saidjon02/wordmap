@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Likes Word</title>
+    <link rel="stylesheet" href="{% static 'css/words.css' %}" />
+  </head>
+  <body>
+    <div class="words-container">
+      <div class="words-card">
+        <h2 class="words-title">Your Liked Words</h2>
+        <ul class="words-list" id="liked-words-list">
+          <!-- Will be filled by JS -->
+        </ul>
+        <p class="back-home-link"><a href="{% url 'home' %}">⬅ Back to Home</a></p>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        let likedWords = JSON.parse(localStorage.getItem('likedWords') || '[]');
+        const list = document.getElementById('liked-words-list');
+        if (likedWords.length === 0) {
+          list.innerHTML = '<li class="no-words">You have no liked words.</li>';
+        } else {
+          likedWords.forEach(function (word, idx) {
+            const li = document.createElement('li');
+            li.className = 'word-item';
+            li.innerHTML = `
+              <span class="word-input">${word}</span>
+              <button class="delete-like-btn" onclick="deleteLikedWord(${idx})" title="Remove from likes">✕</button>
+            `;
+            list.appendChild(li);
+          });
+        }
+      });
+      window.deleteLikedWord = function (idx) {
+        let likedWords = JSON.parse(localStorage.getItem('likedWords') || '[]');
+        likedWords.splice(idx, 1);
+        localStorage.setItem('likedWords', JSON.stringify(likedWords));
+        location.reload();
+      };
+    </script>
+    <style>
+      ul.words-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .delete-like-btn {
+        background: #1474c2;
+        color: #fff;
+        border: none;
+        border-radius: 2px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-left: 12px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.15);
+        transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        outline: none;
+      }
+      .delete-like-btn:hover,
+      .delete-like-btn:focus {
+        background: #0d47a1;
+      }
+    </style>
+  </body>
+</html>
