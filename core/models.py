@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class WordPair(models.Model):
     input_text = models.CharField(max_length=255)
-    output_text = models.CharField(max_length=255)
+    output_text = models.TextField() 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)

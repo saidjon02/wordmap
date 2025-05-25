@@ -1,200 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
+    <title>Home</title>
+  </head>
+  <body>
+    <div class="height">
+      <div class="container">
+        <div class="settings">
+          {% if user.is_authenticated %}
+          <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
+          <ul id="settings-dropdown">
+            <li
+              onclick="window.location.href='{% url 'change_password' %}'"
+              style="cursor: pointer"
+            >
+              <a href="{% url 'change_password' %}">Change password</a>
+            </li>
+            <li
+              onclick="window.location.href='{% url 'change_products' %}'"
+              style="cursor: pointer"
+            >
+              <a href="{% url 'change_products' %}">Words</a>
+            </li>
+            <li onclick="window.location.href='{% url 'add_word' %}'" style="cursor: pointer">
+              <a href="{% url 'add_word' %}">Add new word</a>
+            </li>
+            <li style="cursor: pointer">
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="red"
+                  style="background: none; border: none; color: red; cursor: pointer"
+                >
+                  Logout
+                </button>
+              </form>
+            </li>
+          </ul>
+          {% endif %}
+        </div>
 
-<nav
-  style="
-    background: #f0f0f0;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  "
->
-  <div>
-    <a href="{% url 'home' %}">Home</a>
-  </div>
-  <div>
-    {% if user.is_authenticated %}
-    <div style="display: inline-block; position: relative">
-      <a href="#" id="settings-icon" style="font-size: 24px; user-select: none">⚙️</a>
-      <ul
-        id="settings-dropdown"
-        style="
-          display: none;
-          position: absolute;
-          background: white;
-          border: 1px solid #ccc;
-          padding: 5px 0;
-          margin: 0;
-          list-style: none;
-          min-width: 180px;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-          z-index: 1000;
-        "
-      >
-        <li style="padding: 8px 16px">
-          <a href="/settings/password/" style="text-decoration: none; color: #333"
-            >Parolni o‘zgartirish</a
+        <h2 class="search-word-title">Which added word do you want to search for?</h2>
+        <form method="post" id="search-form">
+          {% csrf_token %}
+          <input
+            type="search"
+            class="search-input"
+            name="query"
+            id="search-input"
+            placeholder="Search for added words"
+            autocomplete="off"
+            value="{{ query|default:'' }}"
+          />
+
+          <button type="submit"><i class="bx bx-search-big"></i></button>
+          <ul id="suggestions-list"></ul>
+        </form>
+
+        {% if response %}
+        <div class="natija" style="position: relative">
+          <button
+            onclick="copyToClipboard()"
+            style="
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              padding: 5px 10px;
+              font-size: 12px;
+              background-color: #4caf50;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+            "
           >
-        </li>
-        <li style="padding: 8px 16px">
-          <a href="/settings/products/" style="text-decoration: none; color: #333"
-            >So'zlar</a
-          >
-        </li>
-        <li>
-          <form method="post" action="{% url 'logout' %}" style="display: inline">
-            {% csrf_token %}
-            <button type="submit" style="margin-left: 10px">Chiqish</button>
-          </form>
-        </li>
-        <li>
-          <a href="{% url 'add_word' %}">+ Yangi so‘z qo‘shish</a>
-        </li>
-      </ul>
+            Copy
+          </button>
+          <p><span id="output">{{ response|linebreaksbr|safe }}</span></p>
+        </div>
+
+        {% endif %}
+      </div>
+      <div class="successs">
+        <div class="success">
+          <p class="success-text">Copied Success!</p>
+        </div>
+      </div>
+      {% if welcome_username %}
+      <div id="welcome-overlay">
+        <h2>Welcome {{ welcome_username }}</h2>
+      </div>
+      {% endif %}
     </div>
-    <span>Xush kelibsiz, {{ user.username }}!</span>
 
-    {% else %}
-    <a href="{% url 'login' %}">Kirish</a> | <a href="{% url 'signup' %}">Ro‘yxatdan o‘tish</a>
-    {% endif %}
-  </div>
-</nav>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('welcome-overlay');
+        if (!overlay) return;
 
-<h2>So‘z qidirish</h2>
-<form method="post" id="search-form">
-  {% csrf_token %}
-  <input
-    type="search"
-    name="query"
-    id="search-input"
-    placeholder="Nima deyish kerak?"
-    autocomplete="off"
-  />
+        // pastga tushirish
+        overlay.classList.add('show');
 
-  <button type="submit">Top</button>
-  <ul
-    id="suggestions-list"
-    style="
-      border: 1px solid #ccc;
-      display: none;
-      position: absolute;
-      background: white;
-      z-index: 100;
-      list-style: none;
-      padding: 5px;
-      width: 200px;
-    "
-  ></ul>
-</form>
+        // 3 soniyadan keyin yuqoriga qaytarib yo‘q qilamiz
+        setTimeout(() => {
+          overlay.classList.remove('show');
+          // animatsiya tugagach butunlay o‘chirib tashlash (ixtiyoriy)
+          overlay.addEventListener('transitionend', () => overlay.remove());
+        }, 3000);
+      });
+      function copyToClipboard() {
+        const successText = document.querySelector('.successs');
+        const html = document.getElementById('output').innerHTML;
 
-{% if response %}
-<p><strong>Natija:</strong> <span id="output">{{ response }}</span></p>
+        const cleanText = html.replace(/<br\s*\/?>/gi, '\n'); // <br> ni \n ga almashtiramiz
 
-{% endif %}
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const input = document.getElementById('search-input');
-    const suggestionBox = document.getElementById('suggestions-list');
-    const outputBox = document.getElementById('output');
-
-    input.addEventListener('input', function () {
-      const term = input.value.trim();
-      if (!term) {
-        suggestionBox.style.display = 'none';
-        suggestionBox.innerHTML = '';
-        return;
+        navigator.clipboard
+          .writeText(cleanText)
+          .then(() => {
+            successText.classList.add('success-show');
+            setTimeout(() => {
+              successText.classList.remove('success-show');
+            }, 2000);
+          })
+          .catch((err) => {
+            alert('Nusxa olishda xatolik yuz berdi: ' + err);
+          });
       }
 
-      fetch(`/search_suggestions/?term=${encodeURIComponent(term)}`)
-        .then((res) => res.json())
-        .then((data) => {
-          suggestionBox.innerHTML = '';
-          if (data.length > 0) {
-            data.forEach((item) => {
-              const li = document.createElement('li');
-              li.textContent = item;
-              li.style.cursor = 'pointer';
-              li.addEventListener('click', () => {
-                input.value = item;
-                suggestionBox.style.display = 'none';
+      document.addEventListener('DOMContentLoaded', () => {
+        // ========== DROPDOWN ==========
+        const icon = document.getElementById('settings-icon');
+        const dropdown = document.getElementById('settings-dropdown');
 
-                fetch('/get_word_output/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': getCookie('csrftoken'),
-                  },
-                  body: `query=${encodeURIComponent(item)}`,
-                })
-                  .then((res) => res.json())
-                  .then((data) => {
-                    let outputEl = document.getElementById('output');
-                    if (!outputEl) {
-                      const p = document.createElement('p');
-                      p.innerHTML = `<strong>Natija:</strong> <span id="output">${data.result}</span>`;
-                      input.closest('form').after(p);
-                    } else {
-                      outputEl.textContent = data.result;
-                    }
-                  });
-              });
-              suggestionBox.appendChild(li);
+        icon.addEventListener('click', (e) => {
+          e.preventDefault();
+          dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+          }
+        });
+
+        // ========== SEARCH SUGGESTIONS & FORM SUBMIT ==========
+        const input = document.getElementById('search-input');
+        const suggestionBox = document.getElementById('suggestions-list');
+        const form = document.getElementById('search-form');
+
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach((cookie) => {
+              let [k, v] = cookie.trim().split('=');
+              if (k === name) cookieValue = decodeURIComponent(v);
             });
-            suggestionBox.style.display = 'block';
-          } else {
+          }
+          return cookieValue;
+        }
+
+        input.addEventListener('input', function () {
+          const term = this.value.trim();
+          if (!term) return (suggestionBox.style.display = 'none');
+
+          fetch(`/search_suggestions/?term=${encodeURIComponent(term)}`)
+            .then((res) => res.json())
+            .then((data) => {
+              suggestionBox.innerHTML = '';
+              if (data.length) {
+                data.forEach((item) => {
+                  let li = document.createElement('li');
+                  li.textContent = item;
+                  li.addEventListener('click', () => {
+                    input.value = item;
+                    suggestionBox.style.display = 'none';
+                    // Formni submit qilamiz
+                    form.submit();
+                  });
+                  suggestionBox.appendChild(li);
+                });
+                suggestionBox.style.display = 'block';
+              }
+            });
+        });
+
+        // klik tashqariga bosilganda suggestion ni yashirish
+        document.addEventListener('click', (e) => {
+          if (!form.contains(e.target)) {
             suggestionBox.style.display = 'none';
           }
         });
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!document.getElementById('search-form').contains(e.target)) {
-        suggestionBox.style.display = 'none';
-      }
-    });
-
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === name + '=') {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
-          }
-        }
-      }
-      return cookieValue;
-    }
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const icon = document.getElementById('settings-icon');
-    const dropdown = document.getElementById('settings-dropdown');
-
-    icon.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-      } else {
-        dropdown.style.display = 'block';
-      }
-    });
-
-    // Tashqariga bosilganda menyuni yopish
-    document.addEventListener('click', (e) => {
-      if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.style.display = 'none';
-      }
-    });
-  });
-</script>
-<script>
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    
-    // bu vaqt zonasini backendga yuborish mumkin (localStorage yoki POST orqali)
-    console.log("Foydalanuvchi timezone:", timezone);
-</script>
+      });
+    </script>
+  </body>
+</html>

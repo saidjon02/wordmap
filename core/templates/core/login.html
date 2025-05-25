@@ -1,9 +1,32 @@
-
-<h2>Kirish</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Kirish</button>
-</form>
-
-<p>Akkaunt yo‘qmi? <a href="{% url 'signup' %}">Ro‘yxatdan o‘tish</a></p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login-style.css' %}" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            class="login-logo"
+            onerror="this.style.display='none'"
+          />
+          <h2>Login</h2>
+        </div>
+        <form method="post" class="login-form" style="color: white;">
+          {% csrf_token %} {{ form.as_p }}
+          <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p class="login-signup">
+          Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

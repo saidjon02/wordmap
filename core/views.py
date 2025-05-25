@@ -17,18 +17,39 @@ def add_word(request):
     else:
         form = WordPairForm()
     return render(request, 'core/add_word.html', {'form': form})
-
 @login_required
 def home(request):
+    # 1) Sessiyadan bir martalik welcome_username'ni olish
+    welcome = request.session.pop('welcome_username', None)
+
     response = None
+    query = ''
+
     if request.method == 'POST':
-        query = request.POST.get('query')
+        # 2) POST so‘rov: inputni qidirish va natijani sessiyaga saqlash
+        query = request.POST.get('query', '')
         try:
             word = WordPair.objects.get(user=request.user, input_text=query)
             response = word.output_text
         except WordPair.DoesNotExist:
-            response = "Topilmadi!"
-    return render(request, 'core/home.html', {'response': response})
+            response = "Not Found!"
+        # sessiyaga saqlaymiz
+        request.session['response'] = response
+        request.session['query'] = query
+        return redirect('home')
+
+    else:
+        # 3) GET so‘rov: oldingi response va query’ni sessiyadan olib, keyin o‘chirib tashlaymiz
+        response = request.session.pop('response', None)
+        query = request.session.pop('query', '')
+
+    # Template’ga yuboriladigan kontekst
+    context = {
+        'response': response,
+        'query': query,
+        'welcome_username': welcome,
+    }
+    return render(request, 'core/home.html', context)
 
 def signup(request):
     if request.method == 'POST':
@@ -69,7 +90,7 @@ def get_word_output(request):
             word = WordPair.objects.get(user=request.user, input_text=query)
             return JsonResponse({'result': word.output_text})
         except WordPair.DoesNotExist:
-            return JsonResponse({'result': "Topilmadi!"})
+            return JsonResponse({'result': "Not Found!"})
     return JsonResponse({'result': ''})
 
 from django.contrib.auth.forms import PasswordChangeForm
@@ -84,7 +105,7 @@ def delete_word(request, word_id):
             messages.success(request, 'So‘z muvaffaqiyatli o‘chirildi.')
             return redirect('home')
     except WordPair.DoesNotExist:
-        messages.error(request, 'So‘z topilmadi.')
+        messages.error(request, 'So‘z Not Found.')
     return redirect('change_products')
 
 from django.shortcuts import get_object_or_404
@@ -182,6 +203,13 @@ class WordPairViewSet(viewsets.ModelViewSet):
     queryset = WordPair.objects.all()
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return WordPair.objects.filter(models.Q(is_public=True) | models.Q(author=user))
+        return WordPair.objects.filter(is_public=True)
+
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
         post = self.get_object()
@@ -201,6 +229,7 @@ class WordPairViewSet(viewsets.ModelViewSet):
         else:
             post.saved_by.add(user)
         return Response({'status': 'save toggled'})
+
 def get_queryset(self):
     user = self.request.user
     if user.is_authenticated:
