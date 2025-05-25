@@ -5,7 +5,6 @@ body {
   margin: 0;
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   padding: 0;
-  height: 100vh;
   color: #f3f4f6;
 }
 * {
@@ -36,11 +35,11 @@ h2.search-word-title {
   font-family: inherit;
 }
 .height {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
-  height: 100vh;
 }
 .height > .container {
   /* margin-top: 50px; */
