@@ -21,9 +21,6 @@ h2.search-word-title {
   letter-spacing: 0.5px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
-#output {
-  /* margin-bottom: 30px; */
-}
 .search-input {
   color: #f3f4f6;
   font-size: 1.15rem;
@@ -40,9 +37,6 @@ h2.search-word-title {
   align-items: center;
   justify-content: center;
   background: none;
-}
-.height > .container {
-  /* margin-top: 50px; */
 }
 .natija {
   max-width: 900px;
