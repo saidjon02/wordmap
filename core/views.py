@@ -7,16 +7,23 @@ from django.contrib.auth import login
 
 @login_required
 def add_word(request):
+    error_message = None
     if request.method == 'POST':
         form = WordPairForm(request.POST)
         if form.is_valid():
-            word = form.save(commit=False)
-            word.user = request.user
-            word.save()
-            return redirect('home')
+            input_text = form.cleaned_data['input_text']
+            # Check for duplicate (case-insensitive)
+            exists = WordPair.objects.filter(user=request.user, input_text__iexact=input_text).exists()
+            if exists:
+                error_message = "You already have this word in your list."
+            else:
+                word = form.save(commit=False)
+                word.user = request.user
+                word.save()
+                return redirect('home')
     else:
         form = WordPairForm()
-    return render(request, 'core/add_word.html', {'form': form})
+    return render(request, 'core/add_word.html', {'form': form, 'error_message': error_message})
 @login_required
 def home(request):
     # 1) Sessiyadan bir martalik welcome_username'ni olish

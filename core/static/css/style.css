@@ -52,6 +52,9 @@ h2.search-word-title {
 #settings-dropdown li button.red {
   color: red !important;
 }
+.logo{
+  width: 350px !important;
+}
 #output {
   white-space: pre-wrap;
   font-size: 1.13rem;

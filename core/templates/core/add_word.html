@@ -47,6 +47,9 @@
           />
           <h2>Add New Word</h2>
         </div>
+        {% if error_message %}
+        <div class="add-word-error">{{ error_message }}</div>
+        {% endif %}
         <form method="post" class="add-word-form">
           {% csrf_token %} {{ form.as_p }}
           <button type="submit" class="add-word-btn">Add</button>

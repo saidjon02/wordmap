@@ -39,32 +39,33 @@
     <meta name="google-site-verification" content="W4uTQLqVYzc9ztVRkUih3zw_KOkffQiCfUoWblGZhSo" />
   </head>
   <body>
+    <div class="logo-div">
+      <img src="{% static 'img/logo 3.png' %}" class="logo" onerror="this.style.display='none'" />
+      <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
+    </div>
     <div class="height">
       <div class="container">
         <div class="settings">
           {% if user.is_authenticated %}
-          <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
+
           <ul id="settings-dropdown">
             <li
-              onclick="window.location.href='{% url 'change_products' %}'"
+              onclick="window.location.href=`{% url 'change_products' %}`"
               style="cursor: pointer"
             >
               <a href="{% url 'change_products' %}">My Words</a>
             </li>
-            <li onclick="window.location.href='{% url 'add_word' %}'" style="cursor: pointer">
+            <li onclick="window.location.href=`{% url 'add_word' %}`" style="cursor: pointer">
               <a href="{% url 'add_word' %}">Add new word</a>
             </li>
-            <li onclick="window.location.href='{% url 'likes_words' %}'" style="cursor: pointer">
+            <li onclick="window.location.href=`{% url 'likes_words' %}`" style="cursor: pointer">
               <a href="{% url 'likes_words' %}">Favorite words</a>
             </li>
-            <li
-              onclick="window.location.href=`{% url 'search_history' %}`"
-              style="cursor: pointer"
-            >
+            <li onclick="window.location.href=`{% url 'search_history' %}`" style="cursor: pointer">
               <a href="{% url 'search_history' %}">Search history</a>
             </li>
             <li
-              onclick="window.location.href='{% url 'change_password' %}'"
+              onclick="window.location.href=`{% url 'change_password' %}`"
               style="cursor: pointer"
             >
               <a href="{% url 'change_password' %}">Change password</a>

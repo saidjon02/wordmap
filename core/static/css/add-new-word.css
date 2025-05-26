@@ -171,6 +171,19 @@ body {
   color: #fff;
 }
 
+.add-word-error {
+  background: #2d1a1a;
+  color: #ff6b6b;
+  border: 1.5px solid #ff6b6b;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.08);
+  animation: fadeIn 0.4s;
+}
+
 @media (max-width: 600px) {
   .add-word-container {
     padding: 0.5rem;
