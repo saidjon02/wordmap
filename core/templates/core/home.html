@@ -40,13 +40,13 @@
   </head>
   <body>
     <div class="height">
+      <img
+        src="{% static 'img/WordMap.png' %}"
+        class="logo"
+        onerror="this.style.display='none'"
+      />
       <div class="container">
         <div class="settings">
-          <img
-            src="{% static 'img/WordMap.png' %}"
-            class="logo"
-            onerror="this.style.display='none'"
-          />
           <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
           {% if user.is_authenticated %}
 

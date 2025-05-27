@@ -56,6 +56,9 @@ h2.search-word-title {
   width: calc(140px + (60 * ((100vw - 320px) / 1080)));
   max-width: 200px;
   min-width: 140px;
+  position: absolute;
+  top: 25px;
+  left: 25px;
 }
 #output {
   white-space: pre-wrap;
