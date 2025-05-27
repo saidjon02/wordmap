@@ -39,13 +39,15 @@
     <meta name="google-site-verification" content="W4uTQLqVYzc9ztVRkUih3zw_KOkffQiCfUoWblGZhSo" />
   </head>
   <body>
-    <div class="logo-div">
-      <img src="{% static 'img/logo 3.png' %}" class="logo" onerror="this.style.display='none'" />
-      <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
-    </div>
     <div class="height">
       <div class="container">
         <div class="settings">
+          <img
+            src="{% static 'img/WordMap.png' %}"
+            class="logo"
+            onerror="this.style.display='none'"
+          />
+          <a href="#" id="settings-icon"><i class="bx bx-cog"></i></a>
           {% if user.is_authenticated %}
 
           <ul id="settings-dropdown">

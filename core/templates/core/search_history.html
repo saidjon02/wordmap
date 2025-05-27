@@ -198,13 +198,16 @@
       </div>
     </div>
     <script>
+      // Get username from Django context (injected below)
+      const username = '{{ request.user.username|default_if_none:"guest" }}' || 'guest';
+      const historyKey = 'searchHistoryFull_' + username;
       // Format date/time nicely
       function formatDateTime(dt) {
         const d = new Date(dt);
         return d.toLocaleString();
       }
       document.addEventListener('DOMContentLoaded', function () {
-        let history = JSON.parse(localStorage.getItem('searchHistoryFull') || '[]');
+        let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
         const list = document.getElementById('search-history-list');
         if (history.length === 0) {
           list.innerHTML = '<li class="no-words">No search history.</li>';
@@ -222,15 +225,14 @@
         }
       });
       window.deleteHistory = function (idx) {
-        let history = JSON.parse(localStorage.getItem('searchHistoryFull') || '[]');
+        let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
         history.splice(idx, 1);
-        localStorage.setItem('searchHistoryFull', JSON.stringify(history));
+        localStorage.setItem(historyKey, JSON.stringify(history));
         location.reload();
       };
       document.getElementById('clear-history-btn').onclick = function () {
         if (confirm('Are you sure you want to clear your entire search history?')) {
-          localStorage.removeItem('searchHistoryFull');
-          localStorage.removeItem('searchHistory');
+          localStorage.removeItem(historyKey);
           location.reload();
         }
       };
