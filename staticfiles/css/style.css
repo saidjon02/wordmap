@@ -21,14 +21,6 @@ h2.search-word-title {
   letter-spacing: 0.5px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
-.logo {
-  width: calc(140px + (60 * ((100vw - 320px) / 1080)));
-  max-width: 200px;
-  min-width: 140px;
-}
-#output {
-  /* margin-bottom: 30px; */
-}
 .search-input {
   color: #f3f4f6;
   font-size: 1.15rem;
@@ -46,9 +38,6 @@ h2.search-word-title {
   justify-content: center;
   background: none;
 }
-.height > .container {
-  /* margin-top: 50px; */
-}
 .natija {
   max-width: 900px;
   background: rgba(24, 24, 27, 0.98);
@@ -62,6 +51,14 @@ h2.search-word-title {
 }
 #settings-dropdown li button.red {
   color: red !important;
+}
+.logo {
+  width: calc(140px + (60 * ((100vw - 320px) / 1080)));
+  max-width: 200px;
+  min-width: 140px;
+  position: absolute;
+  top: 25px;
+  left: 25px;
 }
 #output {
   white-space: pre-wrap;
