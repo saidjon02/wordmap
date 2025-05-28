@@ -1,14 +1,54 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-<head>
-    <title>WordMap</title>
-     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-</head>
-<body>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    {% block content %}
-    {% endblock %}
+    <title>{% block title %}WordMap – So‘zlarni izlash va boshqarish{% endblock %}</title>
+    <meta
+      name="description"
+      content="{% block description %}WordMap – shaxsiy so‘z boshqaruvching. So‘z qidiring, saqlang, yoqtiring va tarixni kuzatib boring.{% endblock %}"
+    />
+    <meta
+      name="keywords"
+      content="WordMap, so‘z qidirish, lug‘at boshqarish, til o‘rganish, sevimli so‘zlar, izlash tarixi"
+    />
+    <meta name="robots" content="index, follow" />
 
-</body>
+    <!-- Open Graph -->
+    <meta property="og:title" content="WordMap – Home | Search and Manage Your Words" />
+    <meta
+      property="og:description"
+      content="WordMap is your personal word manager. Search, save, like, and manage your vocabulary easily."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wordmap-clu1.onrender.com/" />
+    <meta property="og:site_name" content="WordMap" />
+    <link rel="canonical" href="https://wordmap-clu1.onrender.com/" />
+    <meta name="google-site-verification" content="W4uTQLqVYzc9ztVRkUih3zw_KOkffQiCfUoWblGZhSo" />
+
+    <!-- CSS & Icons -->
+    <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png" />
+
+    <!-- JSON-LD for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "WordMap",
+        "description": "WordMap is your personal word manager. Search, save, like, and manage your vocabulary easily.",
+        "url": "https://wordmap-clu1.onrender.com/"
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1><a href="{% url 'home' %}">WordMap</a></h1>
+    </header>
+
+    {% block content %}{% endblock %}
+  </body>
 </html>

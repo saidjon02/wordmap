@@ -1,0 +1,17 @@
+# Python va Django
+*.py[cod]
+__pycache__/
+db.sqlite3
+
+# Muhit fayllari
+.env
+venv/
+env/
+
+# OS va IDE sozlamalari
+.DS_Store
+*.log
+*.pot
+*.py~ 
+.idea/
+.vscode/
