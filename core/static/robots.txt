@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://wordmap-clu1.onrender.com/sitemap.xml
